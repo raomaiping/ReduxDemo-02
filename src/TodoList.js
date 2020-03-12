@@ -1,31 +1,26 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {connect} from 'react-redux'
-class TodoList extends Component {
-    render() { 
-        return ( 
+const TodoList = (props)=>{
+    let{inputValue,inputChange,clickBtn,list,deleteBtn} = props
+    return (
             <div>
                 <div>
                     <input 
-                        value={this.props.inputValue} 
-                        onChange={this.props.inputChange}
+                        value={inputValue} 
+                        onChange={inputChange}
                     />
-                    <button onClick={this.props.clickBtn}>提交</button>
+                    <button onClick={clickBtn}>提交</button>
                 </div>
                 <ul>
                     {
-                        this.props.list.map((item,index)=>{
-                        return (<li key={index+item} onClick={this.props.delete.bind(this,index)}>{item}</li>)
+                        list.map((item,index)=>{
+                        return (<li key={index+item} onClick={(()=>deleteBtn(index))}>{item}</li>)
                         })
                     }
                 </ul>
             </div>
-         );
-    }
-
-
+    )
 }
-
- 
 const stateToProps = (state) =>{
     return {
         inputValue:state.inputValue,
@@ -45,7 +40,7 @@ const dispatchToProps = (dispatch) =>{
            let action = {type:'addItem'}
            dispatch(action)
         },
-        delete (index){
+        deleteBtn(index){
             let action = {
                 type:'delete',
                 index
@@ -54,5 +49,4 @@ const dispatchToProps = (dispatch) =>{
          }
     }
 }
-
 export default connect(stateToProps,dispatchToProps)(TodoList);
