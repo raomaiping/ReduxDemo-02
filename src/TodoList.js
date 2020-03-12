@@ -9,10 +9,14 @@ class TodoList extends Component {
                         value={this.props.inputValue} 
                         onChange={this.props.inputChange}
                     />
-                    <button>提交</button>
+                    <button onClick={this.props.clickBtn}>提交</button>
                 </div>
                 <ul>
-                    <li>前端小菜鸟吖</li>
+                    {
+                        this.props.list.map((item,index)=>{
+                        return (<li key={index+item} onClick={this.props.delete.bind(this,index)}>{item}</li>)
+                        })
+                    }
                 </ul>
             </div>
          );
@@ -24,7 +28,8 @@ class TodoList extends Component {
  
 const stateToProps = (state) =>{
     return {
-        inputValue:state.inputValue
+        inputValue:state.inputValue,
+        list:state.list
     }
 }
 const dispatchToProps = (dispatch) =>{
@@ -35,7 +40,18 @@ const dispatchToProps = (dispatch) =>{
                 value:e.target.value
             }   
             dispatch(action)
-        }
+        },
+        clickBtn(){
+           let action = {type:'addItem'}
+           dispatch(action)
+        },
+        delete (index){
+            let action = {
+                type:'delete',
+                index
+            }
+            dispatch(action)
+         }
     }
 }
 
